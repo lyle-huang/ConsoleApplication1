@@ -15,18 +15,28 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
+        //    string PubStr = "<RSAKeyValue><Modulus>tjPgeyf1BVYgugvQH/MIiW/O5SzzBgQGvePviM0rA4tIDCyDO/F5aSxpfTaMMSdcG98wrNfmQUKNQtoELrTnU9tWO0FxLByxqSPciN0mCyPaLGRM6Gr217RVFEi2huoCuxBFWjYxkTbWRHve8cLacwdp4taDXAiD9lr9jYzBz98=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
+         //   string PrivStr = "<RSAKeyValue><Modulus>tjPgeyf1BVYgugvQH/MIiW/O5SzzBgQGvePviM0rA4tIDCyDO/F5aSxpfTaMMSdcG98wrNfmQUKNQtoELrTnU9tWO0FxLByxqSPciN0mCyPaLGRM6Gr217RVFEi2huoCuxBFWjYxkTbWRHve8cLacwdp4taDXAiD9lr9jYzBz98=</Modulus><Exponent>AQAB</Exponent><P>3gIk0qgIh867sHrzbd/AVMGh5DsgApbr8dxqD898FqbtFMG0aQQksvS2nll5pm1SnsEf/ac2LKIDhK1PF5Y/tw==</P><Q>0hmBOUgVhJhvNPkuiDGMi539g/fYiOltjlK6L1sfxJgzmnfvlhH28vmRXVQ/QoX0sj+ONj0FtIq6JDz/mBkhGQ==</Q><DP>dgZbvyYXyuNMAsmKipoObMC4KVaJcPb9HoqYVClxBbXeik9kcwQB4qWYRFy7AJBUARQYxsfTVC0Zg7qDNr3oxw==</DP><DQ>rWmJxIrf3+Kln3aw1o73L2IHFv7iBheNarSTonS3IuBxb2ThJt/LEb+2IO9hi3nff6R/r/rsE5mRjEmguZy8OQ==</DQ><InverseQ>L4gG4Ty5B7V/axODZoLJlnUmTW/qj8UUTbw5xfKoo9wzmg8D7a7PjD8ft/EsU8n9FgIcyVJ+YQCToc8LZ3EF8Q==</InverseQ><D>o5CEl+qx4h2EeZ/7MYNKiZ6uvDuS2zaoGrXRphyQ3biecBdRpHFNTeZJuNdMGSA9ZuQA3Vlf4fvttjLjiE5sTu5xw9rpRQfI5/X8YUxW6crH7GKwog8YX4lO+WKIkfaKED/IdMaZxvvT1m/6QBAVn788SL0oXoQSn9n0vv1U/BE=</D></RSAKeyValue>";
+            string m = "ZCJgSGT3XQOi3F9vZRGnychO2Tiag88FcpAQogawSoM0Tbky1nF3Wemo2EHmC5Gq1AJ/K89QLjMv7oynXgM+fqtmXoEwScRTWkv+oY+/b8Lp6ZLBoFSx+FUYrV/NKmnTHzlRZNLQD9irfB6bWfrSEi44MuEu4gMNUCI2W/w4vDI=";
+            string m1= "gSayPSQQv9UfoQKwCtb+qVoEHZ+BPY7Sre/oIoqMKqdkqV+XdM20fLhnzqsdlwXJt5HUypulgNOdb+fMZBTMwQcjCqpeF2wbpIfOL6UTlbEdMKtu2J9Vy4UTMirnjJ9/WmdCxWdzobf5GwG14KuQNl0/TZ4dQqpSGZnBzZtit7M=";
             Class1 tmp = new Class1();
-            tmp.CheckLicense("gSayPSQQv9UfoQKwCtb+qVoEHZ+BPY7Sre/oIoqMKqdkqV+XdM20fLhnzqsdlwXJt5HUypulgNOdb+fMZBTMwQcjCqpeF2wbpIfOL6UTlbEdMKtu2J9Vy4UTMirnjJ9/WmdCxWdzobf5GwG14KuQNl0/TZ4dQqpSGZnBzZtit7M=");
+            tmp.CheckLicense(m1);
          // Console.WriteLine("证书错误信息：");
             Console.WriteLine(tmp.LicenseError);
             Console.WriteLine();
             Console.WriteLine("本机序号原始序号：");
             Console.WriteLine(tmp.Getprint(false));
-            Console.WriteLine();
+        /*    Console.WriteLine();
             Console.WriteLine("测试机序号：");
             Console.WriteLine(tmp.Getprint(true));
             Console.WriteLine();
-            Console.WriteLine(tmp.RSAKey());
+            Console.WriteLine(tmp.RSAKey()); */
+            Console.WriteLine();
+            Console.WriteLine(tmp.License("//Vpq2MzgVS6+4ws7aoEUg==" + "|2050-12-31"));
+            Console.WriteLine();
+            tmp.CheckLicense(m);
+            Console.WriteLine(tmp.LicenseError);
+            Console.WriteLine("End");
 
         }
     }
@@ -164,7 +174,39 @@ namespace ConsoleApplication1
                 throw ex;
             }
             return "私钥是：" + "\r\n" + this.xmlPrivateKey + "\r\n" + "公钥是：" + "\r\n" + this.xmlPublicKey;
-        }  
+        }
+
+
+        public string License(string encrypt)
+        {
+            string rt="";
+            System.DateTime now = System.DateTime.Now;
+            using (System.Security.Cryptography.RSACryptoServiceProvider rSACryptoServiceProvider = new System.Security.Cryptography.RSACryptoServiceProvider())
+            {
+                try
+                {
+                    rSACryptoServiceProvider.FromXmlString("<RSAKeyValue><Modulus>tjPgeyf1BVYgugvQH/MIiW/O5SzzBgQGvePviM0rA4tIDCyDO/F5aSxpfTaMMSdcG98wrNfmQUKNQtoELrTnU9tWO0FxLByxqSPciN0mCyPaLGRM6Gr217RVFEi2huoCuxBFWjYxkTbWRHve8cLacwdp4taDXAiD9lr9jYzBz98=</Modulus><Exponent>AQAB</Exponent><P>3gIk0qgIh867sHrzbd/AVMGh5DsgApbr8dxqD898FqbtFMG0aQQksvS2nll5pm1SnsEf/ac2LKIDhK1PF5Y/tw==</P><Q>0hmBOUgVhJhvNPkuiDGMi539g/fYiOltjlK6L1sfxJgzmnfvlhH28vmRXVQ/QoX0sj+ONj0FtIq6JDz/mBkhGQ==</Q><DP>dgZbvyYXyuNMAsmKipoObMC4KVaJcPb9HoqYVClxBbXeik9kcwQB4qWYRFy7AJBUARQYxsfTVC0Zg7qDNr3oxw==</DP><DQ>rWmJxIrf3+Kln3aw1o73L2IHFv7iBheNarSTonS3IuBxb2ThJt/LEb+2IO9hi3nff6R/r/rsE5mRjEmguZy8OQ==</DQ><InverseQ>L4gG4Ty5B7V/axODZoLJlnUmTW/qj8UUTbw5xfKoo9wzmg8D7a7PjD8ft/EsU8n9FgIcyVJ+YQCToc8LZ3EF8Q==</InverseQ><D>o5CEl+qx4h2EeZ/7MYNKiZ6uvDuS2zaoGrXRphyQ3biecBdRpHFNTeZJuNdMGSA9ZuQA3Vlf4fvttjLjiE5sTu5xw9rpRQfI5/X8YUxW6crH7GKwog8YX4lO+WKIkfaKED/IdMaZxvvT1m/6QBAVn788SL0oXoQSn9n0vv1U/BE=</D></RSAKeyValue>");
+                    byte[] bytes = System.Text.Encoding.Default.GetBytes(encrypt);
+                    BigInteger bigInteger = new BigInteger(bytes);
+                    System.Security.Cryptography.RSAParameters rSAParameters = rSACryptoServiceProvider.ExportParameters(true);
+                    BigInteger n = new BigInteger(rSAParameters.Modulus);
+                    BigInteger d = new BigInteger(rSAParameters.D);
+                    //BigInteger exp = new BigInteger(rSAParameters.Exponent);
+                    BigInteger bigInteger2 = bigInteger.modPow(d, n);
+                 //   string @string = System.Text.Encoding.Default.GetString(bigInteger2.getBytes());
+                 //   string sss = bigInteger2.ToHexString();
+                    bytes = bigInteger2.getBytes();
+                    rt = Convert.ToBase64String(bytes);
+                 
+                }
+                catch (System.Exception ex)
+                {
+                    this._isRight = false;
+                    this._licenseError = "许可验证失败，原因：" + ex.Message;
+                }
+            }
+            return rt;
+        }
 
 
         public bool CheckLicense(string encrypt)
@@ -174,8 +216,13 @@ namespace ConsoleApplication1
             {
                 try
                 {
+
+                  //  rSACryptoServiceProvider.FromXmlString("<RSAKeyValue><Modulus>tjPgeyf1BVYgugvQH/MIiW/O5SzzBgQGvePviM0rA4tIDCyDO/F5aSxpfTaMMSdcG98wrNfmQUKNQtoELrTnU9tWO0FxLByxqSPciN0mCyPaLGRM6Gr217RVFEi2huoCuxBFWjYxkTbWRHve8cLacwdp4taDXAiD9lr9jYzBz98=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
+
                     rSACryptoServiceProvider.FromXmlString("<RSAKeyValue><Modulus>1Fb8uQoFq4vdVPNTDfQQkACSHyG5jEz4ivNv5BNgtWwbJzDeF91A2LTRM5AdH9X6xGRdrmW2QNpE5+RI8Oub5rMYNZm8byzo4EbK0mOpoLQcpQ3d1R94VTht4g0BDt29m2v47vKaf/k1Jg12Ccn5D5bb8AO7UsxQUhKHTh5oCNc=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
                     BigInteger bigInteger = new BigInteger(System.Convert.FromBase64String(encrypt));
+                    byte[] bytes1 = System.Convert.FromBase64String(encrypt);
+
                     System.Security.Cryptography.RSAParameters rSAParameters = rSACryptoServiceProvider.ExportParameters(false);
                     BigInteger n = new BigInteger(rSAParameters.Modulus);
                     BigInteger exp = new BigInteger(rSAParameters.Exponent);
@@ -187,38 +234,15 @@ namespace ConsoleApplication1
 					});
                     if (array.Length == 2)
                     {
-                        if (array[0] == this.GetFingerprint())
-                        {
-                            System.DateTime now2 = System.DateTime.Now;
-                            if (System.DateTime.TryParse(array[1], out now2))
-                            {
-                                if (Class1.GetSystemTime() > now2)
-                                {
-                                    this._isRight = false;
-                                    this._licenseError = "许可证授权到期！" + "\r\n" + array[0] + "\r\n" + array[1];
-                                }
-                                else
-                                {
-                                    this._isRight = true;
-                                    this._licenseError = "许可证授权" + "\r\n" + array[0] + "\r\n" + array[1];
-                                }
-                            }
-                            else
-                            {
-                                this._isRight = false;
-                                this._licenseError = "许可证格式错误" + "\r\n" + array[0] + "\r\n" + array[1];
-                            }
-                        }
-                        else
-                        {
+                        
                             this._isRight = false;
-                            this._licenseError = "无效的许可证" + "\r\n" + array[0] + "\r\n" + array[1];
-                        }
+                            this._licenseError = "认证ID：" + "\r\n" + array[0] + "\r\n"+"认证时间： " + array[1];
+                        
                     }
                     else
                     {
                         this._isRight = false;
-                        this._licenseError = "无效的许可证" + "\r\n" + array[0];
+                        this._licenseError = "认证ID：" + "\r\n" + array[0];
                     }
                 }
                 catch (System.Exception ex)
